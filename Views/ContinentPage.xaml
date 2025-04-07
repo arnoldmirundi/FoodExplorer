@@ -1,0 +1,116 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:FoodExplorer.Models"
+             xmlns:viewmodels="clr-namespace:FoodExplorer.ViewModels"
+             x:Class="FoodExplorer.Views.ContinentPage"
+             Title="{Binding ContinentName}"
+             BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#121212}">
+
+    <RefreshView IsRefreshing="{Binding IsBusy}"
+                 Command="{Binding LoadFoodsCommand}"
+                 RefreshColor="#4CAF50">
+
+        <Grid RowDefinitions="Auto,*,Auto">
+            <!-- Search Bar -->
+            <SearchBar Grid.Row="0"
+                      Placeholder="Search foods..."
+                      Text="{Binding SearchText}"
+                      SearchCommand="{Binding SearchCommand}"
+                      Margin="10,5"
+                      BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}"
+                      TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                      CancelButtonColor="#4CAF50"/>
+
+            <!-- Food Items Collection -->
+            <CollectionView Grid.Row="1"
+                          ItemsSource="{Binding FilteredFoods}"
+                          SelectionMode="Single"
+                          SelectionChangedCommand="{Binding FoodSelectedCommand}"
+                          SelectionChangedCommandParameter="{Binding SelectedItem, Source={RelativeSource Self}}"
+                          ItemsLayout="VerticalGrid, 2"
+                          Margin="10,0">
+
+                <CollectionView.EmptyView>
+                    <StackLayout VerticalOptions="Center" Padding="20">
+                        <Image Source="no_food.png"
+                               HeightRequest="120"
+                               Aspect="AspectFit"/>
+                        <Label Text="No foods found"
+                               FontSize="16"
+                               HorizontalOptions="Center"
+                               TextColor="{AppThemeBinding Light=Gray, Dark=Silver}"/>
+                        <Button Text="Retry"
+                                Command="{Binding LoadFoodsCommand}"
+                                BackgroundColor="#4CAF50"
+                                TextColor="White"
+                                Margin="0,10"
+                                HorizontalOptions="Center"/>
+                    </StackLayout>
+                </CollectionView.EmptyView>
+
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Food">
+                        <Frame CornerRadius="15"
+                               Padding="0"
+                               Margin="5"
+                               HasShadow="True"
+                               BackgroundColor="{AppThemeBinding Light=White, Dark=#1E1E1E}">
+
+                            <Grid RowDefinitions="150,Auto,Auto" HeightRequest="220">
+                                <!-- Food Image -->
+                                <Image Source="{Binding ImageUrl}"
+                                       Aspect="AspectFill"
+                                       HeightRequest="150">
+                                    <Image.Triggers>
+                                        <DataTrigger TargetType="Image"
+                                                     Binding="{Binding ImageUrl, Converter={StaticResource NullToBoolConverter}}"
+                                                     Value="True">
+                                            <Setter Property="Source" Value="food_placeholder.png"/>
+                                        </DataTrigger>
+                                    </Image.Triggers>
+                                </Image>
+
+                                <!-- Food Name -->
+                                <Label Grid.Row="1"
+                                       Text="{Binding Name}"
+                                       FontAttributes="Bold"
+                                       FontSize="16"
+                                       Margin="10,5"
+                                       TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                       MaxLines="1"
+                                       LineBreakMode="TailTruncation"/>
+
+                                <!-- Origin -->
+                                <HorizontalStackLayout Grid.Row="2"
+                                                     Margin="10,0,10,5"
+                                                     Spacing="5"
+                                                     VerticalOptions="Center">
+                                    <Label Text="{Binding Origin}"
+                                           FontSize="12"
+                                           TextColor="{AppThemeBinding Light=#616161, Dark=#9E9E9E}"/>
+                                    <Label Text="•"
+                                           FontSize="12"
+                                           TextColor="{AppThemeBinding Light=#616161, Dark=#9E9E9E}"/>
+                                    <Label Text="{Binding Continent}"
+                                           FontSize="12"
+                                           TextColor="{AppThemeBinding Light=#616161, Dark=#9E9E9E}"/>
+                                </HorizontalStackLayout>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Add New Food Button (Visible to Admins) -->
+            <Button Grid.Row="2"
+                    Text="Add New Food"
+                    Command="{Binding AddFoodCommand}"
+                    IsVisible="{Binding IsAdmin}"
+                    BackgroundColor="#4CAF50"
+                    TextColor="White"
+                    Margin="20"
+                    CornerRadius="10"
+                    HeightRequest="50"/>
+        </Grid>
+    </RefreshView>
+</ContentPage>
