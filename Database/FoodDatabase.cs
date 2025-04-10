@@ -37,7 +37,7 @@ public class FoodDatabase
         var foods = new List<Food>
         {
             new() { Name = "Sushi", Description = "Japanese vinegared rice with raw fish.", Continent = "Asia", ImageUrl = "sushi.png" },
-            new() { Name = "Pad Thai", Description = "Thai stir-fried noodles.", Continent = "Asia", ImageUrl = "padthai.png" },
+            new() { Name = "Pad Thai", Description = "Thai stirfried noodles.", Continent = "Asia", ImageUrl = "padthai.png" },
             new() { Name = "Pizza", Description = "Italian flatbread with tomato and cheese.", Continent = "Europe", ImageUrl = "pizza.png" },
             new() { Name = "Croissant", Description = "French buttery, flaky pastry.", Continent = "Europe", ImageUrl = "croissant.png" },
             new() { Name = "Jollof Rice", Description = "West African rice dish.", Continent = "Africa", ImageUrl = "jollof.png" },

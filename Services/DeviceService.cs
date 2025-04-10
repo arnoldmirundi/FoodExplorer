@@ -12,7 +12,7 @@ public class DeviceService
 
     public void ShakeDetected()
     {
-        // For actual shake detection, use a plugin or platform-specific code
+        // For actual shake detection, use a plugin or platformspecific code
         Vibration.Default.Vibrate(TimeSpan.FromMilliseconds(500));
     }
 }
